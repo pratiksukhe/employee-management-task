@@ -35,13 +35,14 @@ exports.login = async (req, res) => {
       },
     };
 
-    const token = jwt.sign(
+    jwt.sign(
       payload,
       process.env.SECRET,
       { expiresIn: 360000 },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+
+        res.cookie("token", token).json({ token });
       }
     );
   } catch (error) {
@@ -54,7 +55,7 @@ exports.login = async (req, res) => {
 // @route     POST /api/user/add-employee
 // @access    PRIVATE
 exports.addEmployee = async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, dob, role, password } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -68,6 +69,8 @@ exports.addEmployee = async (req, res) => {
       firstName,
       lastName,
       email,
+      dob,
+      role,
       password,
     });
 
@@ -197,4 +200,23 @@ exports.updatepassword = async (req, res) => {
     console.error(error.megssae);
     res.status(500).send("Server error");
   }
+};
+
+// @desc      logout user
+// @route     GET /api/user/logout
+// @access    PUBLIC
+exports.logout = (req, res) => {
+  res.clearCookie("token");
+  res.json({
+    message: "User signout successfully",
+  });
+};
+
+// @desc      find birthday
+// @route     PUT /api/user/birthday-wishes
+// @access    PRIVATE
+exports.birthdayWishes = async (req, res) => {
+  var todaysDate = Date();
+  const birthday = await User.find({ dob: { $eq: todaysDate } });
+  res.json(birthday);
 };

@@ -2,7 +2,7 @@ require("dotenv").config();
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const express = require("express");
-
+const cookieParser = require("cookie-parser");
 const app = express();
 
 //bring all routes here
@@ -23,6 +23,8 @@ mongoose
 
 // parse application/json
 app.use(express.json());
+// Cookie parser
+app.use(cookieParser());
 
 //dev logging middleware
 if (process.env.NODE_ENV === "development") {

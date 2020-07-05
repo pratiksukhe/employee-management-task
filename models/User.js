@@ -31,7 +31,13 @@ const UserSchema = new mongoose.Schema({
   dob: {
     type: Date,
   },
-  date: {
+  // attendance: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "Attendance",
+  //   },
+  // ],
+  createdAt: {
     type: Date,
     default: Date.now,
   },

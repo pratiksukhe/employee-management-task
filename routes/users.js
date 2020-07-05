@@ -10,7 +10,14 @@ const {
   deleteEmpById,
   updateProfile,
   updatepassword,
+  logout,
+  birthdayWishes,
 } = require("../controllers/users");
+
+const {
+  createAttendence,
+  attendenceReport,
+} = require("../controllers/attendence");
 
 router.post("/login", login);
 //admin
@@ -24,5 +31,12 @@ router.delete("/delete-emp/:id", isAuthenticated, isAdmin, deleteEmpById);
 router.get("/emp-profile/:id", isAuthenticated, viewEmployeeProfile);
 router.put("/view-update", isAuthenticated, updateProfile);
 router.put("/update-password", isAuthenticated, updatepassword);
+router.get("/logout", logout);
 
+//birthday
+router.get("/birthday-wishes", isAuthenticated, isAdmin, birthdayWishes);
+
+//attendence
+router.post("/create-attendence", isAuthenticated, createAttendence);
+router.post("/attend-report", isAuthenticated, isAdmin, attendenceReport);
 module.exports = router;
